@@ -1,0 +1,21 @@
+{
+    "short_name": "124 TOTY",
+    "name": "124 Team of the Year",
+    "icons": [
+        {
+            "src": "images/appicon.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "density": 2.0
+    },
+        {
+            "src": "images/appicon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "density": 4.0
+    }
+  ],
+    "start_url": "index.php",
+    "display": "standalone",
+    "orientation": "portrait"
+}
