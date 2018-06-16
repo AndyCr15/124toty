@@ -7,8 +7,8 @@ include_once 'src/contrib/Google_Oauth2Service.php';
 /*
  * Configuration and setup Google API
  */
-$clientId = '409998107623-vganlr28sk14dde1k14f77lhtkn3pefa.apps.googleusercontent.com';
-$clientSecret = 'LlUFgr3XrbmEBgEoD-Wmbn84';
+$clientId = 'XXXXXXX.apps.googleusercontent.com';
+$clientSecret = 'XXXXXXXX';
 $redirectURL = 'http://124toty.androidandy.uk/login.php';
 //$redirectURL = 'http://localhost:8080/boardgames/login.php';
 
