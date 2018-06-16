@@ -10,7 +10,7 @@
         
     include 'connection.php';
     include 'functions.php';
-    include 'checkmanager.php';
+    include 'checkteamleader.php';
     include 'header.php';
 
 //    ini_set('display_errors', 1);
@@ -90,12 +90,18 @@
 
                 <?php                        
                 }
+
+                $disabled = ' disabled';
+                if($_SESSION['userData']['level'] < 10){
+                    $disabled = '';
+                }
+
                 ?>
 
 
                 <div class="row">
                     <div class="col-sm-9 offset-sm-3">
-                        <button type="submit" class="btn btn-primary">Save Bridge Cover</button>
+                        <button type="submit" class="btn btn-primary<?php echo $disabled ?>">Save Bridge Cover</button>
                     </div>
                 </div>
 

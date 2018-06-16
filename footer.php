@@ -25,28 +25,35 @@
 
 </script>
 
+<!--
 <script type="text/javascript">
     $(document).ready(function() {
         // iOS web app full screen hacks.
-        /*
         if (window.navigator.standalone == true) {
             // make all link remain in web app mode.
             $('a').click(function() {
                 window.location = $(this).attr('href');
                 return false;
             });
-        }*/
+        }
     });
 
 </script>
+-->
+<script>
+addEventListener("load", function() {
+    window.scrollTo(1, 0);
+}, false);
+</script>
 
 <script>
-    (function(a,b,c){
-        if(c in b&&b[c]){
-            // keep links within the webapp
-            var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){
-                d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)
-                },!1)
-                }
-                })(document,window.navigator,"standalone")
-    </script>
+(function(a,b,c){
+    if(c in b&&b[c]){
+        // keep links within the webapp
+        var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){
+            d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)
+            },!1)
+            }
+            })(document,window.navigator,"standalone")
+</script>
+

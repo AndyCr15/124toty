@@ -1,10 +1,6 @@
+<?php include 'session.php'; ?>
+
 <!DOCTYPE html>
-
-<?php 
-
-include 'session.php'; 
-
-?>
 
 <html lang="en">
 

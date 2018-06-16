@@ -112,12 +112,12 @@
                 <?php
             }
 
-            if(canCheck($_SESSION['userData']['employee'])) {
+            if(canCheck($_SESSION['userData']['employee']) && trackerActive()) {
                 ?>
     
                     <div class="topBottom col-sm-6 col-lg-4">
     
-                        <a href="yourvoice.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Cust Serv Nominations</a>
+                        <a href="yourvoice.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true"><?php echo trackerName() ?></a>
     
                     </div>
     

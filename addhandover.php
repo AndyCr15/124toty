@@ -10,6 +10,7 @@
         
     include 'connection.php';
     include 'header.php';
+    include 'functions.php';
 
 //    ini_set('display_errors', 1);
 //    ini_set('display_startup_errors', 1);
@@ -63,7 +64,7 @@ else{ // Maximum length not reached so update the value of handover counter
                         <textarea class="form-control" id="handover" name="handover" rows="6" onKeyPress=check_length(this.form); onKeyDown=check_length(this.form);></textarea>
                     </div>
                     <div>
-                    <input size=1 value=9999 name=text_num> Characters Left
+                    <input size=5 value=9999 name=text_num> Characters Left
                     </div>
                     <input type="hidden" name="employee" value="<?php echo $_SESSION['userData']['employee'] ?>">
                     <button type="submit" class="btn btn-primary">Add Handover</button>

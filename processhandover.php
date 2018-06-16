@@ -21,7 +21,10 @@ if ($_POST) {
     
         //$manager = $_SESSION['userData']['employee'];
         
-        $sql = "INSERT INTO `handovers` (handover, employee) VALUES ('".$handover."','".$employee."')";
+        date_default_timezone_set('Europe/London');
+        $today = date("Y-m-d G:i:s");
+
+        $sql = "INSERT INTO `handovers` (handover, employee, time) VALUES ('".$handover."','".$employee."','".$today."')";
         
         if ($link->query($sql) === TRUE) {
             debug_to_console("New diary note added successfully");

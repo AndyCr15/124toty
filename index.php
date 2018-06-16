@@ -1,8 +1,4 @@
-<?php include 'session.php'; 
-
-//set cookie to enable autologin
-setcookie("id", $userData['employee'], time() + 60*60*24*365);
-?>
+<?php include 'session.php'; ?>
 
 <!DOCTYPE html>
 
@@ -20,7 +16,6 @@ setcookie("id", $userData['employee'], time() + 60*60*24*365);
 //    ini_set('display_startup_errors', 1);
 //    error_reporting(E_ALL);
 
-
     include 'checkloggedin.php';
 
     ?>
@@ -33,7 +28,7 @@ setcookie("id", $userData['employee'], time() + 60*60*24*365);
 
         <?php
 
-            include 'navlogout.php';
+            include 'navback.php';
 
         ?>
 
@@ -60,29 +55,6 @@ setcookie("id", $userData['employee'], time() + 60*60*24*365);
                     echo '</div>';
                 }
                 ?>
-            </div>
-
-            <div class="row indexborder">
-
-                <h4 class="col-12">Partner Search</h4>
-
-                <div id="error">
-                    <? echo $error.$successMessage; ?>
-                </div>
-
-                <form action="viewpartners.php">
-                    <div class="form-group row topBottom">
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" id="search" name="search">
-                        </div>
-                        <div class="col-md-2">
-                            <button type="submit" id="submit" class="btn btn-light">Search</button>
-                        </div>
-
-
-                    </div>
-                </form>
-
             </div>
 
             <!-- display the current TOTY league table -->

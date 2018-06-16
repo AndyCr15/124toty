@@ -35,14 +35,14 @@
 
             <div class="container">
 
-                <?php
-                    
-                if($_SESSION['userData']['level'] < 10) {
-                
-                ?>
                 <div class="row indexborder">
-                    <h4 class="col-12">Admin</h4>
 
+                    <h4 class="col-12">Admin</h4>
+                    <?php
+                    
+                    if(isManager()) {
+                    
+                    ?>
                     <div class="topBottom col-sm-6 col-lg-4">
 
                         <a href="sendmail.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Email Team</a>
@@ -72,6 +72,12 @@
                         <a href="addfoodsafetycheck.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Add a Food Safety Check</a>
 
                     </div>
+
+                    <div class="topBottom col-sm-6 col-lg-4">
+
+                        <a href="addfloormanagertask.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Add a Floor Manager Task</a>
+
+                    </div>
                     
                     <div class="topBottom col-sm-6 col-lg-4">
 
@@ -80,31 +86,37 @@
                     </div>
 
                     <?php
+
+                    }
+
                     //if it's an admin user, give the option of seeing the log page link
                     if($_SESSION['userData']['admin'] == 1) {
                     
-                    ?>
+                        ?>
 
-                    <div class="topBottom col-sm-6 col-lg-4">
+                        <div class="topBottom col-sm-6 col-lg-4">
 
-                        <a href="viewlog.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">View Log</a>
+                            <a href="trackeradmin.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Tracker Admin</a>
 
-                    </div>
+                        </div>
 
-                    <?php
+                        <div class="topBottom col-sm-6 col-lg-4">
+
+                            <a href="viewlog.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">View Log</a>
+
+                        </div>
+                        <?php
 
                     }
 
                     ?>
 
+                    <div class="topBottom col-sm-6 col-lg-4">
+
+                        <a href="logout.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Logout</a>
+
+                    </div>
                 </div>
-
-                <?php
-
-                }
-
-                ?>
-                
             </div>
 
             <?php

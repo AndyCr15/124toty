@@ -12,7 +12,6 @@ if(!isset($_SESSION['userData'])){
 }
 
 // record last visited in database
-
 include 'connection.php';
 
 $dt = new DateTime();

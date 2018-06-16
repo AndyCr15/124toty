@@ -39,6 +39,19 @@
         border-width: 2px;
     }
 
+    .floorButton {
+        background: rgba(81, 73, 62, .8);
+        color: #ddd;
+        font-size: small;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+        border-style: solid;
+        border-width: 3px;
+        border-color: #fff;
+        text-align: center;
+        vertical-align: middle;
+    }
+
     .handoverHeader {
         background: rgba(92, 160, 4, .6);
         color: #ddd;

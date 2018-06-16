@@ -4,7 +4,7 @@
 
 $stockNotiLimit = 7; // amount of days required for a stock warning to show
 $deadNotiLimit = 3; // amount of days required for a deadline warning to show
-$handNotiLimit = 14; // amount of hours required for a handover to show
+$handNotiLimit = 12; // amount of hours required for a handover to show
 $foodNotiLimit = 4; // number of days since a food safety check for noti
 
 $notifications = array(); // to hold the alert
@@ -23,7 +23,7 @@ if($_SESSION['userData']['canrotationcheck'] == 1) {
     }
 
     while($handrow = mysqli_fetch_array($handresult)){
-        if( strtotime($handrow['time']) > strtotime('-'.$handNotiLimit.' HOURS') ){
+        if(strtotime($handrow['time']) > strtotime('-'.$handNotiLimit.' HOURS') ){
 
             array_push($notifications , '<a href="viewhandovers.php">Recent Handover by : '.checkPartnerFirstName($handrow['employee']).'</a>');
             array_push($notiLevel, 'info');
@@ -94,16 +94,17 @@ $bridgeCover = '';
 while($bridgeRow = mysqli_fetch_array($bridgeResult)){
     $time = $theseslots[$bridgeRow['slot']].', ';
 
-    // check if it's consecutive cover, if so, make it look like one cover
-    debug_to_console(substr($bridgeCover, -7, 5));
-    debug_to_console(substr($time,0,5));
-
     if(substr($bridgeCover, -7, 5) == substr($time,0,5)){
         // this means the end of the last slot is the same as the start of the next slot
         $bridgeCover = substr($bridgeCover, 0, -7);
         $time = substr($time, 8);
     }
-
+    
+    if(((substr($time, -7, 2) + 0.25) < (currentHour() + (currentMinute()/60))) && (substr($time, -5, 3) != 'End')){
+        // this means the current time is past the end of the slot we're checking, so don't add it.
+        // also a check the final time is not 'End' otherwise the last slow will never show up
+        $time = '';
+    }
     $bridgeCover .= $time;
     
 }

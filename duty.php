@@ -45,13 +45,19 @@
 
             <div class="topBottom col-sm-6 col-lg-4">
 
-                <a href="viewhandovers.php" class="btn btn-light btn-block btn-lg" role="button">Handovers</a>
+                <a href="bridgecover.php" class="btn btn-light btn-block btn-lg" role="button">Bridge Cover</a>
 
             </div>
 
             <div class="topBottom col-sm-6 col-lg-4">
 
-                <a href="bridgecover.php" class="btn btn-light btn-block btn-lg" role="button">Bridge Cover</a>
+                <a href="floormanager.php" class="btn btn-light btn-block btn-lg" role="button">Floor Manager</a>
+
+            </div>
+
+            <div class="topBottom col-sm-6 col-lg-4">
+
+                <a href="viewhandovers.php" class="btn btn-light btn-block btn-lg" role="button">Handovers</a>
 
             </div>
 
@@ -81,6 +87,12 @@
             <div class="topBottom col-sm-6 col-lg-4">
 
                 <a href="recordfoodsafetychecks.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Food Safety Checks</a>
+
+            </div>
+
+            <div class="topBottom col-sm-6 col-lg-4">
+
+                <a href="reference.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Reference</a>
 
             </div>
 

@@ -1,6 +1,6 @@
 <?php
 
-$slots = array('eight'=>'Open - 9:15','nine'=>'9:15 - 10:15','ten'=>'10:15 - 11:15','eleven'=>'11:15 - 12:15','twelve'=>'12:15 - 13:15','thirteen'=>'13:15 - 14:15','fourteen'=>'14:15 - 15:15','fifteen'=>'15:15 - 16:15','sixteen'=>'16:15 - 17:15','seventeen'=>'17:15 - 18:15','eighteen'=>'18:15 - 19:15','nineteen'=>'19:15 - End');
+$slots = array('eight'=>'Open - 09:15','nine'=>'09:15 - 10:15','ten'=>'10:15 - 11:15','eleven'=>'11:15 - 12:15','twelve'=>'12:15 - 13:15','thirteen'=>'13:15 - 14:15','fourteen'=>'14:15 - 15:15','fifteen'=>'15:15 - 16:15','sixteen'=>'16:15 - 17:15','seventeen'=>'17:15 - 18:15','eighteen'=>'18:15 - 19:15','nineteen'=>'19:15 - End');
 
 function check_in_date_range($start_date, $end_date, $date_from_user) {
   // Convert to timestamp
@@ -10,6 +10,10 @@ function check_in_date_range($start_date, $end_date, $date_from_user) {
 
   // Check that user date is between start & end
   return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
+}
+
+function isManager(){
+    return($_SESSION['userData']['level'] < 10);
 }
 
 function showUser($userData = array()){
@@ -901,7 +905,7 @@ function questionCorrect($questionID){
     $quresult = mysqli_query($link, $ququery);
     $rowCount = $quresult->num_rows;
     if($rowCount < 1){
-        return 0;
+        return na;
     }
     $passes = 0;
     while($row = mysqli_fetch_array($quresult)){
@@ -913,4 +917,52 @@ function questionCorrect($questionID){
     }
     return (floor(($passes / $rowCount)*100));
 }
+
+function currentHour(){
+    date_default_timezone_set('Europe/London');
+    return date('H', time());
+}
+
+function currentMinute(){
+    date_default_timezone_set('Europe/London');
+    return date('i', time());
+}
+
+function trackerActive(){
+    include 'connection.php';
+
+    $trackerQuery = "SELECT * FROM `124admin` ORDER BY `id` LIMIT 1";
+    $trackerResult = mysqli_query($link, $trackerQuery);
+    $trackerRow = mysqli_fetch_array($trackerResult);
+
+    if($trackerRow['active'] == '1'){
+        return true;
+    } else {
+        return false;
+    }
+    
+}
+
+function trackerName(){
+    include 'connection.php';
+
+    $trackerQuery = "SELECT * FROM `124admin` ORDER BY `id` LIMIT 1";
+    $trackerResult = mysqli_query($link, $trackerQuery);
+    $trackerRow = mysqli_fetch_array($trackerResult);
+
+    return $trackerRow['currenttracker'];
+    
+}
+
+function trackerLink(){
+    include 'connection.php';
+
+    $trackerQuery = "SELECT * FROM `124admin` ORDER BY `id` LIMIT 1";
+    $trackerResult = mysqli_query($link, $trackerQuery);
+    $trackerRow = mysqli_fetch_array($trackerResult);
+
+    return $trackerRow['link'];
+    
+}
+
 ?>

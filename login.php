@@ -9,17 +9,6 @@ include_once 'gpConfig.php';
 include_once 'User.php';
 include 'connection.php';
 
-
-if (array_key_exists("logout",$_GET)) {
-        
-        unset($_SESSION);
-        setcookie("employee", "", time() - 60*60);
-        $_COOKIE["employee"] = "";  
-        
-        session_destroy();
-        
-    }
-
 // check if we should auto log the user in due to a cookie or session
 if (isset($_COOKIE['id'])) {
     
@@ -29,9 +18,6 @@ if (isset($_COOKIE['id'])) {
     
     //Storing user data into session
     $_SESSION['userData'] = $row;
-    
-    //set cookie to enable autologin
-    setcookie("id", $row['employee'], time() + 60*60*24*365);
     
     ?>
     <script type="text/javascript">
@@ -79,6 +65,9 @@ if ($gClient->getAccessToken()) {
     //Storing user data into session
     $_SESSION['userData'] = $userData;
 
+    //set cookie to enable autologin
+    setcookie("id", $_SESSION['userData']['employee'], time() + 60*60*24*10);
+
     ?>
 
     <div class="fullScreen">
@@ -97,7 +86,7 @@ if ($gClient->getAccessToken()) {
         <?php
     } else {
         
-        echo '<h3 style="color:red">Sorry, you can\'t use this site. <a href="login.php?logout=1">Click here.</a></h3>';
+        echo '<h3 style="color:red">Sorry, you need to be logged in with your work Google account to use this app. <a href="login.php?logout=1">Click here.</a></h3>';
         
     }
 } else {

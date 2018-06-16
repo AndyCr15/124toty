@@ -115,7 +115,7 @@
                                     similar_text($search, $row['surname'], $surpercent);
                                     similar_text($search, $row['carreg'], $carpercent);
                                     
-                                    $percent = max($firstpercent, $surpercent, ($carpercent+30));
+                                    $percent = max($firstpercent, $surpercent, ($carpercent+25));
                                     
                                     if($percent>64){
                                  

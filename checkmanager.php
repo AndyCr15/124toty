@@ -9,7 +9,7 @@ if(!isset($_SESSION['userData'])){
     </script>
     <?php
 
-        } else if($_SESSION['userData']['level'] > 9){
+        } else if(!isManager()){
         ?>
         <script type="text/javascript">
             location.href = 'index.php';

@@ -1,11 +1,11 @@
+<?php include 'session.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <?php
-    
-    include 'session.php';
 
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -61,7 +61,12 @@
 
                                 echo '<div class="col-12 alert alert-warning" role="alert">Q: '.$questionRow['question'].'</div>';
                                 echo '<div class="col-12 alert alert-success" role="alert">A: '.$questionRow['answer'].'</div>';
-                                echo '<h6>'.questionCorrect($questionRow['id']).'% Success Rate</h6>';
+                                $successRate = questionCorrect($questionRow['id']);
+                                if($successRate == 'na'){
+                                    echo '<h6>Not yet been asked</h6>';
+                                } else {
+                                    echo '<h6>'.$successRate.'% Success Rate</h6>';
+                                }
                                 $count ++;
 
                             }

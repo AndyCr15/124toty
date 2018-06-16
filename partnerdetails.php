@@ -197,7 +197,7 @@
 
                     echo '<div class="col-sm-4">';
                     echo '<div class="whiteBackground">';
-                    echo '<strong>Rotation Checks</strong><br>';
+                    echo '<strong>Partner Checks</strong><br>';
                     echo 'Passes: '.countRotationPasses($employee).'  Fails: '.countRotationFails($employee).'<br>';
                     echo 'Percentage: '.rotationPassPercentage($employee).'%';
                     echo '</div>';

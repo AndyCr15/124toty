@@ -17,8 +17,8 @@
     include 'checkloggedin.php';
     
     // this can be used for anything we're tracking Partners to complete. Just change the variable below
-    $action = 'Customer Service Nomination';
-    $formURL = 'https://goo.gl/forms/kCGXO836h38F06An1';
+    $action = trackerName();
+    $formURL = trackerLink();
 
     ?>
 

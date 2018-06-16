@@ -80,7 +80,7 @@
                     echo '<h1>Removing Records Made by Team '.$team.'</h1>';
                     
                     echo '<div class="col-12">';
-                    echo '<h4>Rotation Checks</h4>';
+                    echo '<h4>Partner Checks</h4>';
                     echo '</div>';
                     
                     $query = "SELECT * FROM `rotationchecks` ORDER BY id DESC";
@@ -101,6 +101,37 @@
                             echo '<div class="col-12 col-sm-6 col-lg-4">';
                             echo '<div class="'.strtolower(checkTeam($row['partner'])).'Background click">'; ?>
                             <a href="processrotationcheck.php?remove=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure? This will delete this record.')">
+                            <?php
+                            echo '<strong>'.checkPartnerName($row['partner']).'</strong> : '.strtoupper($row['result']);
+                            echo '<br>Checked by: '.checkPartnerName($row['manager']).' - '.showDate($row['time']);
+                            echo '</a>'; 
+                            echo '</div>'; 
+                            echo '</div>'; 
+                        }
+                    }
+
+                    echo '<div class="col-12">';
+                    echo '<h4>Observations</h4>';
+                    echo '</div>';
+                    
+                    $query = "SELECT * FROM `observations` ORDER BY id DESC";
+                    $result = mysqli_query($link, $query);
+                    
+                    if (!$result) {
+                        printf("Error: %s\n", mysqli_error($link));
+                        exit();
+                    }
+                    $count = 0;
+                    while($row = mysqli_fetch_array($result)) {
+                        
+                        //show observation check with a remove button
+                        if($team == checkTeam($row['manager']) && ($count < $limit)){
+                            
+                            $count++;
+                            
+                            echo '<div class="col-12 col-sm-6 col-lg-4">';
+                            echo '<div class="'.strtolower(checkTeam($row['partner'])).'Background click">'; ?>
+                            <a href="processobservation.php?remove=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure? This will delete this record.')">
                             <?php
                             echo '<strong>'.checkPartnerName($row['partner']).'</strong> : '.strtoupper($row['result']);
                             echo '<br>Checked by: '.checkPartnerName($row['manager']).' - '.showDate($row['time']);

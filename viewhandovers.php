@@ -16,7 +16,6 @@
     include 'connection.php';
     include 'functions.php';
 
-    include 'checkloggedin.php';
     include 'header.php';
     
     ?>
@@ -50,7 +49,9 @@
                         }
                         while($row = mysqli_fetch_array($result)){
 
-                            $header = date("l", strtotime($row['time'])).' - <font size="2">'.showDate($row['time']).' '.showTime($row['time']).'</font>  -  '.checkPartnerName($row['employee']);
+                            $thisDate = date("j F, g:i a", strtotime($row['time']));
+
+                            $header = date("l", strtotime($row['time'])).' - <font size="2">'.$thisDate.'</font>  -  '.checkPartnerName($row['employee']);
 
                             ?>
 
@@ -66,7 +67,6 @@
                                             - [<a href="processhandover.php?remove=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure? This will delete this record.')"><font size="2" color="red">Remove</font></a>]
 
                                             <?php
-                                        
                                             }
                                             ?>
                                     </div>
