@@ -2,7 +2,7 @@
 
     $dbHost     = "localhost";
     $dbUsername = "androida_andyc";
-    $dbPassword = "mYsqlp4ss.";
+    $dbPassword = "XXXXXXXX";
     $dbName     = "androida_toty";
     
 
