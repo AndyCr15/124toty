@@ -49,7 +49,7 @@
                         }
                         while($row = mysqli_fetch_array($result)){
 
-                            $thisDate = date("j F, g:i a", strtotime($row['time']));
+                            $thisDate = niceDateTime($row['time']);
 
                             $header = date("l", strtotime($row['time'])).' - <font size="2">'.$thisDate.'</font>  -  '.checkPartnerName($row['employee']);
 

@@ -43,6 +43,37 @@ function showEmployee($employee, $data){
     
 }
 
+function showPartnerOfTheMonth($userData = array()){
+    echo '<div class="col-sm-6 col-lg-4">';
+    echo '<div class="'.strtolower(checkTeam($userData['employee'])).'Background click">';
+    echo '<a href="partnerdetails.php?employeenumber='.$userData['employee'].'">';
+    echo checkPartnerName($userData['employee']).' ('.$userData['SUM(score)'].')';
+    echo '</a>';
+    echo '</div>';
+    echo '</div>';
+}
+
+function showSick($sickData = array()){
+
+    if($sickData['actioned'] == 0){
+        $done = '[<font color="grey"> Notification of Absence Done </font>]';
+    } else {
+        $done = '[<font color="grey"> Record RTW Done </font>]';
+    }
+
+    echo '<div class="col-sm-6 col-lg-4">';
+    echo '<div class="'.strtolower(checkTeam($sickData['partner'])).'Background click">';
+    echo checkPartnerName($sickData['partner']).' ('.niceDateTime($sickData['time']).')';
+    echo '<br>'.$sickData['reason'].' - '.$sickData['discussion'];
+    ?>
+    <a href="processsickcall.php?actioned=<?php echo $sickData['actioned']+1; ?>&id=<?php echo $sickData['id'] ?>" onclick="return confirm('Has this been done?')">
+    <?php
+    echo $done;
+    echo '</a>';
+    echo '</div>';
+    echo '</div>';
+}
+
 function canCheck($employee){
 
     $canCheck = false;
@@ -965,4 +996,84 @@ function trackerLink(){
     
 }
 
+function timeDateNow(){
+    date_default_timezone_set('Europe/London');
+    return date("Y-m-d G:i:s");
+}
+
+function niceDateTime($time){
+    return date("j F, g:i a", strtotime($time));
+}
+
+function isAdmin(){
+    if($_SESSION['userData']['admin'] == 1){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isThisWeek($date){
+    // specify the date range for 'this week'
+    if(date("l") == 'Sunday'){
+        // it's Sunday so 'last Sunday' would report last week, this makes it today
+        $startDate = date('Y-m-d', strtotime("Today"));
+    } else {
+        $startDate = date('Y-m-d', strtotime("last Sunday"));
+    }
+    $endDate = date('Y-m-d', strtotime("next Sunday"));
+
+    debug_to_console($date);
+    debug_to_console(check_in_date_range($startDate, $endDate, $date));
+
+    return (check_in_date_range($startDate, $endDate, $date));
+}
+
+function isLastWeek($date){
+    // This calculates the last Saturday and then 6 days previous for the start of last week
+    $endDate = strtotime("last Saturday");
+    $startDate = strtotime('-6 day', $endDate);
+    $startDate = date('Y-m-d', $startDate);
+    $endDate = date('Y-m-d', $endDate);
+
+    debug_to_console($date);
+    debug_to_console(check_in_date_range($startDate, $endDate, $date));
+
+    return (check_in_date_range($startDate, $endDate, $date));
+}
+
+function isThisMonth($date){
+    
+    $startDate = strtotime("first day of this month");
+    $endDate = strtotime("last day of this month");
+    $startDate = date('Y-m-d', $startDate);
+    $endDate = date('Y-m-d', $endDate);
+
+    debug_to_console($date);
+    debug_to_console(check_in_date_range($startDate, $endDate, $date));
+
+    return (check_in_date_range($startDate, $endDate, $date));
+}
+
+function isLastMonth($date){
+    
+    $startDate = strtotime("first day of last month");
+    $endDate = strtotime("last day of last month");
+    $startDate = date('Y-m-d', $startDate);
+    $endDate = date('Y-m-d', $endDate);
+
+    debug_to_console($date);
+    debug_to_console(check_in_date_range($startDate, $endDate, $date));
+
+    return (check_in_date_range($startDate, $endDate, $date));
+}
+
+function calculateScore($employee){
+    echo $employee.'<br>';
+}
+
+function monthText($month){
+    $dateObj   = DateTime::createFromFormat('!m', $month);
+    return $dateObj->format('F');
+}
 ?>

@@ -1,0 +1,61 @@
+CREATE VIEW partner_score
+AS
+SELECT 
+	RC.partner,
+	RC.time,
+	CASE WHEN RC.result = "pass" THEN 4 ELSE -6 END AS score,
+	MONTH(RC.time) AS month,
+	YEAR(RC.time) AS year
+FROM rotationchecks RC
+UNION
+SELECT 
+	UC.partner,
+	UC.time,
+	CASE WHEN UC.result = "pass" THEN 1 ELSE -2 END AS score,
+	MONTH(UC.time) AS month,
+	YEAR(UC.time) AS year
+FROM uniformchecks UC
+UNION
+SELECT 
+	OB.partner,
+	OB.time,
+	CASE WHEN OB.result = "pass" THEN 5 ELSE -5 END AS score,
+	MONTH(OB.time) AS month,
+	YEAR(OB.time) AS year
+FROM observations OB
+UNION
+SELECT 
+	BC.partner,
+	BC.time,
+	CASE WHEN BC.result = "pass" THEN 2 ELSE -2 END AS score,
+	MONTH(BC.time) AS month,
+	YEAR(BC.time) AS year
+FROM bagchecks BC
+UNION
+SELECT 
+	QU.partner,
+	QU.time,
+	CASE WHEN QU.result = "pass" THEN 2 ELSE 0 END AS score,
+	MONTH(QU.time) AS month,
+	YEAR(QU.time) AS year
+FROM questionchecks QU
+
+
+CREATE VIEW partner_team_month_score
+AS
+SELECT P.employee, 
+	P.team, 
+	PS.time,
+	PS.score,
+	MONTH(PS.time) AS month,
+	YEAR(PS.time) AS year
+FROM partners P
+LEFT OUTER JOIN partner_score PS ON PS.partner = P.employee
+;
+
+
+
+SELECT employee, Team, SUM(score) FROM partner_team_month_score
+WHERE MONTH = 6 AND YEAR = 2018 AND team='blue'
+GROUP BY employee, team
+ORDER BY 3 DESC LIMIT 5

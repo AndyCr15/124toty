@@ -155,6 +155,18 @@
 
                         <div class="topBottom col-sm-6 col-lg-4">
 
+                            <a href="viewsickcalls.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Return To Works</a>
+
+                        </div>
+
+                        <div class="topBottom col-sm-6 col-lg-4">
+            
+                            <a href="partnerofthemonth.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Partner Of The Month</a>
+
+                        </div>
+
+                        <div class="topBottom col-sm-6 col-lg-4">
+
                             <a href="teamrecords.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Team Records</a>
 
                         </div>

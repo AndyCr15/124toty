@@ -4,9 +4,9 @@
 
 <?php
 
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 include 'connection.php';
 include 'functions.php';
@@ -21,8 +21,7 @@ if ($_POST) {
     
         //$manager = $_SESSION['userData']['employee'];
         
-        date_default_timezone_set('Europe/London');
-        $today = date("Y-m-d G:i:s");
+        $today = timeDateNow();
 
         $sql = "INSERT INTO `handovers` (handover, employee, time) VALUES ('".$handover."','".$employee."','".$today."')";
         

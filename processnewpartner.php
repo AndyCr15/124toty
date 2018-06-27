@@ -21,6 +21,7 @@ if (!empty($_POST)) {
     $canrotationcheck = mysqli_real_escape_string($link, $_POST['rotationcheck']);
     $canuniformcheck = mysqli_real_escape_string($link, $_POST['uniformcheck']);
     $canbagcheck = mysqli_real_escape_string($link, $_POST['bagcheck']);
+    $active = mysqli_real_escape_string($link, $_POST['active']);
 
     if($team == 'Random'){
 
@@ -82,8 +83,8 @@ if (!empty($_POST)) {
 
     }
 
-    $sql = "REPLACE INTO `partners` (employee, firstname, surname, phone, email, carreg, team, level, canrotationcheck, canuniformcheck, canbagcheck)
-    VALUES ('".$employee."','".$firstname."','".$surname."','".$phone."','".$email."','".$carreg."','".$team."','".$level."','".$canrotationcheck."','".$canuniformcheck."','".$canbagcheck."')";
+    $sql = "REPLACE INTO `partners` (employee, firstname, surname, phone, email, carreg, team, level, canrotationcheck, canuniformcheck, canbagcheck, active)
+    VALUES ('".$employee."','".$firstname."','".$surname."','".$phone."','".$email."','".$carreg."','".$team."','".$level."','".$canrotationcheck."','".$canuniformcheck."','".$canbagcheck."','".$active."')";
 
     if ($link->query($sql) === TRUE) {
         debug_to_console("Partner updated or created successfully");

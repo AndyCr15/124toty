@@ -298,13 +298,21 @@
 
 
                     if($_SESSION['userData']['level'] < 10){
+                        // managers only
+                        ?>
+                        <div class="topBottom col-sm-6 col-lg-4">
+            
+                            <a href="addsickcall.php?employee=<?php echo $employee ?>" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Called Sick</a>
+            
+                        </div>
+                        <?php
 
                         $discussionText = array();
 
                         echo '<div class="col-12">';
                         echo '<h4>Discussions</h4>';
                         echo '</div>';
-
+                        
                         $query = "SELECT * FROM `rotationchecks` WHERE `partner` = '".$employee."'";
                         $result = mysqli_query($link, $query);
                         if (!$result) {
@@ -315,7 +323,27 @@
 
                             if($row['discussion'] != "") {
 
-                                $discussionText[] = $row['time'].' ['.strtoupper($row['type']).'] '.$row['discussion'].' <br>('.checkPartnerName($row['manager']).')';
+                                $admin = '';
+                                ?>
+
+                                <script>
+                                function confirmDeleteCheck(item) {
+                                    var conf = confirm("Delete this item forever?");
+                                    if (conf){
+                                        console.log("Confirmed");
+                                        window.location.replace("processrotationcheck.php?remove=" + item);
+                                    } else {
+                                        console.log("Denied");
+                                    }
+                                }
+                                </script>
+                                
+                                <?php
+                                if(isAdmin()){
+                                    $admin = "<button type='button' class='btn btn-danger btn-sm buttonRight' onclick='confirmDeleteCheck(".$row['id'].")'>Delete</button>";
+                                }
+
+                                $discussionText[] = $row['time'].' ['.strtoupper($row['type']).'] '.$row['discussion'].' <br>('.checkPartnerName($row['manager']).') '.$admin;
                                 
                             }
 
@@ -347,7 +375,27 @@
 
                             if(($row['discussion'] != "") || ($row['result']) == 'fail') {
 
-                                $discussionText[] = $row['time'].' [UNIFORM ('.strtoupper($row['result']).')] '.$row['discussion'].' <br>('.checkPartnerName($row['manager']).')';
+                                $admin = '';
+                                ?>
+
+                                <script>
+                                function confirmDeleteUni(item) {
+                                    var conf = confirm("Delete this item forever?");
+                                    if (conf){
+                                        console.log("Confirmed");
+                                        window.location.replace("processuniformcheck.php?remove=" + item);
+                                    } else {
+                                        console.log("Denied");
+                                    }
+                                }
+                                </script>
+                                
+                                <?php
+                                if(isAdmin()){
+                                    $admin = "<button type='button' class='btn btn-danger btn-sm buttonRight' onclick='confirmDeleteUni(".$row['id'].")'>Delete</button>";
+                                }
+
+                                $discussionText[] = $row['time'].' [UNIFORM ('.strtoupper($row['result']).')] '.$row['discussion'].' <br>('.checkPartnerName($row['manager']).') '.$admin;
 
                             }
 

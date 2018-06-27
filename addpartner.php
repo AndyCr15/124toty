@@ -66,7 +66,8 @@ include 'session.php';
             $canbagcheck = $row['canbagcheck'];
             $email = $row['email'];
             $carreg = $row['carreg'];
-        
+            $active = $row['active'];
+
             $type = "Update";
             
         }
@@ -169,6 +170,14 @@ include 'session.php';
                             <input class="form-group-input" type="checkbox" value="1" name="bagcheck" id="bagcheck" <?php if($canbagcheck=="1") { echo 'checked'; } ?>>
                             <label class="form-group-label" for="bagcheck">
                             Can Perform Partner Searches
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-9 offset-sm-3">
+                            <input class="form-group-input" type="checkbox" value="1" name="active" id="active" <?php if($active=="1") { echo 'checked'; } ?>>
+                            <label class="form-group-label" for="active">
+                            Still Works Here
                             </label>
                         </div>
                     </div>

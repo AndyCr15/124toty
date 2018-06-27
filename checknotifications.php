@@ -12,6 +12,20 @@ $notiLevel = array(); // this will set the class of the alert
 
 include 'connection.php';
 
+// look for sick calls not recorded on PartnerLink
+$rtwquery = "SELECT id FROM `sickness` WHERE (`manager`='".$_SESSION['userData']['employee']."' AND `actioned`='0') LIMIT 1";
+$rtwresult = mysqli_query($link, $rtwquery);
+
+if (!$rtwresult) {
+    printf("Error: %s\n", mysqli_error($link));
+    exit();
+}
+
+if(mysqli_num_rows($rtwresult) > 0){
+    array_push($notifications , '<a href="viewsickcalls.php">Record all sick calls in PartnerLink.</a>');
+    array_push($notiLevel, 'warning');
+}
+
 // show a handover if there's been one in the last 12 hours and user is TL or above
 if($_SESSION['userData']['canrotationcheck'] == 1) {
 
@@ -83,7 +97,7 @@ if($_SESSION['userData']['level'] < 10){
 
 $bridgeQuery = "SELECT * FROM `bridge` WHERE `manager`='".$_SESSION['userData']['employee']."'";
 $bridgeResult = mysqli_query($link, $bridgeQuery);
-$theseslots = array('eight'=>'Open - 9:15','nine'=>'9:15 - 10:15','ten'=>'10:15 - 11:15','eleven'=>'11:15 - 12:15','twelve'=>'12:15 - 13:15','thirteen'=>'13:15 - 14:15','fourteen'=>'14:15 - 15:15','fifteen'=>'15:15 - 16:15','sixteen'=>'16:15 - 17:15','seventeen'=>'17:15 - 18:15','eighteen'=>'18:15 - 19:15','nineteen'=>'19:15 - End');
+$theseslots = array('eight'=>'Open - 09:15','nine'=>'09:15 - 10:15','ten'=>'10:15 - 11:15','eleven'=>'11:15 - 12:15','twelve'=>'12:15 - 13:15','thirteen'=>'13:15 - 14:15','fourteen'=>'14:15 - 15:15','fifteen'=>'15:15 - 16:15','sixteen'=>'16:15 - 17:15','seventeen'=>'17:15 - 18:15','eighteen'=>'18:15 - 19:15','nineteen'=>'19:15 - End');
 
 if (!$bridgeResult) {
     printf("Error: %s\n", mysqli_error($link));
