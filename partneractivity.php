@@ -28,9 +28,9 @@
             
         include 'navback.php';
 
-        $month = date("n");
-        $year = 2019;
-
+        $month = date('n');
+        $year = date('Y');
+        
         if(isset($_GET['month'])){
             $month = $_GET['month'];
         }
@@ -38,15 +38,13 @@
             $year = $_GET['year'];
         }
 
-        debug_to_console($year);
-
         ?>
 
         <div class="container">
 
             <?php
 
-            showPOTM($month, $year);
+            showPartnerActivity($month, $year);
 
             ?>
 
@@ -67,22 +65,47 @@
         return $row['month'];
     }
 
-    function showPOTM($month, $year){
+    function showPartnerActivity($month, $year){
         
         include 'connection.php';
 
         $teams = array("Blue", "Green", "Red", "Yellow");
 
-        echo '<h1>Partner Of The Month '.monthText($month).' '.$year.'</h1>';
+        echo '<h1>Partner Activity For '.monthText($month).'</h1>';
+
+        echo '<h6>This report shows how many checks, questions, observations each Partner has undertaken, listed in reverse order.</h6>';
+
+        // get array with employee number and activity
+        $countquery = "SELECT employee,COUNT(*) as count FROM partner_team_month_score
+            WHERE MONTH = ".$month." AND YEAR = 2018
+            GROUP BY employee ORDER BY count ASC";
+
+        $countresult = mysqli_query($link, $countquery);
+        while($data = mysqli_fetch_assoc($countresult)){
+            $activityCount[$data['employee']] = $data['count'];
+        }
 
         foreach ($teams as $team) {
         
             echo '<h4>'.$team.'</h4>';
             echo '<div class="row">';
-            $query = "SELECT employee, Team, SUM(score) AS count FROM partner_team_month_score
-            WHERE MONTH = ".$month." AND YEAR = ".$year." AND team='".strtolower($team)."'
-            GROUP BY employee, team
-            ORDER BY 3 DESC LIMIT 6";
+            $query = "SELECT
+                    e.employee,
+                    e.firstname,
+                    e.surname,
+                    (SELECT
+                    COUNT(*)
+                    FROM partner_team_month_score s
+                    WHERE s.employee = e.employee
+                    AND s.year = ".$year."
+                    AND s.month = ".$month.")
+                    AS ScoreCount
+                FROM partners e
+                WHERE e.active = 1
+                AND e.team = '".$team."'
+                AND e.level = 10
+                ORDER BY ScoreCount ASC";
+
             $result = mysqli_query($link, $query);
             if (!$result) {
                 printf("Error: %s\n", mysqli_error($link));
@@ -90,53 +113,31 @@
             }
             
             while($row = mysqli_fetch_array($result)){
-        
-                showPartnerAndCount($row['employee'],$row['count']);
-        
+
+                showPartnerAndCount($row['employee'],$row['ScoreCount']);
+                
             }
+            
             echo '</div>';
         }
         echo '<br>';
 
         echo '<h6>Change Month</h6>';
         // links for other months here
+        // ** TO DO ** I need a way of it passing one year to the next
         $first = checkFirstMonth();
         $current = date("n");
         echo '<div class="row">';
 
-        for ($x = 1; $x <= 12; $x++) {
+        for ($x = $current; $x >= $first; $x--) {
             // only show if it's not the month current being shown
             if($x != $month){
                 echo '<div class="col-sm-4">';
                 echo '<div class="lightGreenBox click">';
-                echo '<a href="partnerofthemonth.php?month='.$x.'&year='.$year.'">'.monthText($x).'</a>';
+                echo '<a href="partneractivity.php?month='.$x.'">'.monthText($x).'</a>';
                 echo '</div>';
                 echo '</div>';
             }
-            
-        }
-        echo '</div>';
-
-        echo '<br>';
-
-        echo '<h6>Change Year</h6>';
-        // links for other years here
-
-        $years = array(2018, 2019);
-
-        foreach ($years as $thisYear) {
-            // only show if it's not the month current being shown
-
-            debug_to_console($thisYear);
-
-            if($thisYear != $year){
-                echo '<div class="col-sm-4">';
-                echo '<div class="lightGreenBox click">';
-                echo '<a href="partnerofthemonth.php?month='.$month.'&year='.$thisYear.'">'.$thisYear.'</a>';
-                echo '</div>';
-                echo '</div>';
-            }
-            
         }
         echo '</div>';
 

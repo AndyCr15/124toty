@@ -103,6 +103,12 @@
 
             </div>
 
+            <div class="topBottom col-sm-6 col-lg-4">
+
+                <a href="rotationcheckcount.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Rotation Checks Completed</a>
+
+            </div>
+
             <?php
             }
 
@@ -134,19 +140,24 @@
 
                     if(canCheck($_SESSION['userData']['employee'])) {
                         ?>
-
+<!--
                         <div class="topBottom col-sm-6 col-lg-4">
             
                             <a href="partneremailsreport.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Team Emails Status</a>
             
                         </div>
-
+-->
                         <div class="topBottom col-sm-6 col-lg-4">
             
                             <a href="signedup.php?team=<?php echo $_SESSION['userData']['team'] ?>&db=hasphoto" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Partner Sign Up</a>
 
                         </div>
 
+                        <div class="topBottom col-sm-6 col-lg-4">
+
+                            <a href="partneractivity.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Partner Activity</a>
+
+                        </div>
                         <?php
                     }
                     
@@ -155,12 +166,6 @@
 
                         <div class="topBottom col-sm-6 col-lg-4">
 
-                            <a href="viewsickcalls.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Return To Works</a>
-
-                        </div>
-
-                        <div class="topBottom col-sm-6 col-lg-4">
-            
                             <a href="partnerofthemonth.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Partner Of The Month</a>
 
                         </div>

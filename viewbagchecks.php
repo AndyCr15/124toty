@@ -162,6 +162,37 @@
                         
                     ?>
                     </div>
+
+                    <h1>Top Managers Completing In Last 30 Days</h1>
+
+                    <div class="row">
+
+                        <?php
+
+                        $query = "SELECT manager, 
+                                Count(*) AS ScoreCount 
+                            FROM   `bagchecks` 
+                            WHERE  ( time BETWEEN Now() - INTERVAL 30 DAY AND Now() ) 
+                            GROUP  BY manager 
+                            ORDER  BY scorecount DESC 
+                            LIMIT  6";
+                        $result = mysqli_query($link, $query);
+
+                        if (!$result) {
+                            printf("Error: %s\n", mysqli_error($link));
+                            exit();
+                        }
+
+                        while($row = mysqli_fetch_array($result)){
+
+                            showPartnerAndCount($row['manager'],$row['ScoreCount']);
+
+                        }
+
+                        ?>
+
+                    </div>
+
             </div>
 
             <?php

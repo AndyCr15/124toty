@@ -1,10 +1,6 @@
+<?php include 'session.php'; ?>
+
 <!DOCTYPE html>
-
-<?php 
-
-include 'session.php'; 
-
-?>
 
 <html lang="en">
 
@@ -41,6 +37,7 @@ include 'session.php';
         $team = "";
         $level = "";
         $email = "";
+        $active = 1;
         
         if(isset($_GET["employee"])) {
             
@@ -61,6 +58,7 @@ include 'session.php';
             $team = $row['team'];
             $level = $row['level'];
             $employee = $row['employee'];
+            $picture = $row['picture'];
             $canrotationcheck = $row['canrotationcheck'];
             $canuniformcheck = $row['canuniformcheck'];
             $canbagcheck = $row['canbagcheck'];
@@ -103,6 +101,13 @@ include 'session.php';
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="picture">Photo URL</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="picture" id="picture" value="<?php echo $picture ?>">
+                        </div>
+                    </div>
+                    <!--
+                    <div class="form-group row">
                         <label class="col-sm-3 col-form-label" for="phone">Phone Number</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="phone" id="phone" value="<?php echo $phone ?>">
@@ -114,6 +119,7 @@ include 'session.php';
                             <input type="email" class="form-control" name="email" id="email" value="<?php echo $email ?>">
                         </div>
                     </div>
+                    -->
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label" for="carreg">Car Registration</label>
                         <div class="col-sm-9">
@@ -150,35 +156,23 @@ include 'session.php';
                     
                     <!-- Make some disabled pending level entered? (ie level 10 cannot bagcheck) -->
                     <div class="form-group row">
-                        <div class="col-sm-9 offset-sm-3">
-                            <input class="form-group-input" type="checkbox" value="1" name="rotationcheck" id="rotationcheck" <?php if($canrotationcheck=="1") { echo 'checked'; } ?>>
-                            <label class="form-group-label" for="rotationcheck">
-                            Can Rotation Spot Check Others
-                            </label>
+                        <div class="col-sm-9 offset-sm-3 alignVert">
+                            <input class="form-group-input vertAlign" type="checkbox" value="1" name="rotationcheck" id="rotationcheck" <?php if($canrotationcheck=="1") { echo 'checked'; } ?>>Can Rotation Spot Check Others<br>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-9 offset-sm-3">
-                            <input class="form-group-input" type="checkbox" value="1" name="uniformcheck" id="uniformcheck" <?php if($canuniformcheck=="1") { echo 'checked'; } ?>>
-                            <label class="form-group-label" for="uniformcheck">
-                            Can Uniform Check Others
-                            </label>
+                            <input class="form-group-input vertAlign" type="checkbox" value="1" name="uniformcheck" id="uniformcheck" <?php if($canuniformcheck=="1") { echo 'checked'; } ?>>Can Uniform Check Others<br>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-9 offset-sm-3">
-                            <input class="form-group-input" type="checkbox" value="1" name="bagcheck" id="bagcheck" <?php if($canbagcheck=="1") { echo 'checked'; } ?>>
-                            <label class="form-group-label" for="bagcheck">
-                            Can Perform Partner Searches
-                            </label>
+                            <input class="form-group-input vertAlign" type="checkbox" value="1" name="bagcheck" id="bagcheck" <?php if($canbagcheck=="1") { echo 'checked'; } ?>>Can Perform Partner Searches<br>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-9 offset-sm-3">
-                            <input class="form-group-input" type="checkbox" value="1" name="active" id="active" <?php if($active=="1") { echo 'checked'; } ?>>
-                            <label class="form-group-label" for="active">
-                            Still Works Here
-                            </label>
+                            <input class="form-group-input vertAlign" type="checkbox" value="1" name="active" id="active" <?php if($active=="1") { echo 'checked'; } ?>>Still Works Here<br>
                         </div>
                     </div>
                     

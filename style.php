@@ -1,4 +1,24 @@
 <style>
+    input[type='checkbox'] {
+        -webkit-appearance:none;
+        width:40px;
+        height:40px;
+        margin:5px;
+        background:white;
+        border-radius:10px;
+        border:2px solid #222;
+    }
+    input[type='checkbox']:checked {
+        background: rgba(81, 73, 62, .8);
+    }
+
+    .vertAlign {
+        display: inline-block;
+        vertical-align: middle;
+        background: yellow;
+        padding: 3px 5px;
+    }
+    
     body,
     html {
         height: 100%;
@@ -135,7 +155,7 @@ pre {
 
         background: rgba(92, 160, 4, .6);
         color: white;
-        padding: 15px;
+        padding: 10px;
         margin: 10px;
         border-radius: 5px;
 

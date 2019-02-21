@@ -1,6 +1,7 @@
 <?php
 
-$slots = array('eight'=>'Open - 09:15','nine'=>'09:15 - 10:15','ten'=>'10:15 - 11:15','eleven'=>'11:15 - 12:15','twelve'=>'12:15 - 13:15','thirteen'=>'13:15 - 14:15','fourteen'=>'14:15 - 15:15','fifteen'=>'15:15 - 16:15','sixteen'=>'16:15 - 17:15','seventeen'=>'17:15 - 18:15','eighteen'=>'18:15 - 19:15','nineteen'=>'19:15 - End');
+$slots_old = array('eight'=>'Open - 09:15','nine'=>'09:15 - 10:15','ten'=>'10:15 - 11:15','eleven'=>'11:15 - 12:15','twelve'=>'12:15 - 13:15','thirteen'=>'13:15 - 14:15','fourteen'=>'14:15 - 15:15','fifteen'=>'15:15 - 16:15','sixteen'=>'16:15 - 17:15','seventeen'=>'17:15 - 18:15','eighteen'=>'18:15 - 19:15','nineteen'=>'19:15 - End');
+$slots = array('eight'=>'07:30 - 10:30','nine'=>'10:30 - 13:15','ten'=>'13:15 - 15:30','eleven'=>'15:30 - 18:00','twelve'=>'18:00 - 21:00');
 
 function check_in_date_range($start_date, $end_date, $date_from_user) {
   // Convert to timestamp
@@ -43,14 +44,26 @@ function showEmployee($employee, $data){
     
 }
 
-function showPartnerOfTheMonth($userData = array()){
+function showPartnerAndCount($employee, $count){
     echo '<div class="col-sm-6 col-lg-4">';
-    echo '<div class="'.strtolower(checkTeam($userData['employee'])).'Background click">';
-    echo '<a href="partnerdetails.php?employeenumber='.$userData['employee'].'">';
-    echo checkPartnerName($userData['employee']).' ('.$userData['SUM(score)'].')';
+    echo '<div class="'.strtolower(checkTeam($employee)).'Background click">';
+    echo '<a href="partnerdetails.php?employeenumber='.$employee.'">';
+    echo checkPartnerName($employee).' ('.$count.')';
     echo '</a>';
     echo '</div>';
     echo '</div>';
+}
+
+function ordinal_suffix($num){
+    $num = $num % 100; // protect against large numbers
+    if($num < 11 || $num > 13){
+         switch($num % 10){
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+        }
+    }
+    return 'th';
 }
 
 function showSick($sickData = array()){
@@ -64,7 +77,7 @@ function showSick($sickData = array()){
     echo '<div class="col-sm-6 col-lg-4">';
     echo '<div class="'.strtolower(checkTeam($sickData['partner'])).'Background click">';
     echo checkPartnerName($sickData['partner']).' ('.niceDateTime($sickData['time']).')';
-    echo '<br>'.$sickData['reason'].' - '.$sickData['discussion'];
+    //echo '<br>'.$sickData['reason'].' - '.$sickData['discussion'];
     ?>
     <a href="processsickcall.php?actioned=<?php echo $sickData['actioned']+1; ?>&id=<?php echo $sickData['id'] ?>" onclick="return confirm('Has this been done?')">
     <?php
@@ -185,14 +198,14 @@ function checkPartnerEmail($employeeNumber){
 
 function countChecksDone ($employeeNumber, $table){
     include 'connection.php';
-    $query = "SELECT * FROM `".$table."` WHERE `manager` = '".$employeeNumber."'";
+    $query = "SELECT * FROM `".$table."` WHERE `manager` = '".$employeeNumber."' AND (time BETWEEN NOW() - INTERVAL 3 MONTH AND NOW())";
     $result = mysqli_query($link, $query);
     return mysqli_num_rows($result);
 }
 
 function countRotationPasses($employeeNumber){
     include 'connection.php';
-    $query = "SELECT * FROM `rotationchecks` WHERE `partner` = '".$employeeNumber."'";
+    $query = "SELECT * FROM `rotationchecks` WHERE `partner` = '".$employeeNumber."' AND (time BETWEEN NOW() - INTERVAL 3 MONTH AND NOW())";
     $result = mysqli_query($link, $query);
     if (!$result) {
         printf("Error: %s\n", mysqli_error($link));
@@ -213,7 +226,7 @@ function countRotationPasses($employeeNumber){
 
 function countRotationFails($employeeNumber){
     include 'connection.php';
-    $query = "SELECT * FROM `rotationchecks` WHERE `partner` = '".$employeeNumber."'";
+    $query = "SELECT * FROM `rotationchecks` WHERE `partner` = '".$employeeNumber."' AND (time BETWEEN NOW() - INTERVAL 3 MONTH AND NOW())";
     $result = mysqli_query($link, $query);
     if (!$result) {
         printf("Error: %s\n", mysqli_error($link));
@@ -936,7 +949,7 @@ function questionCorrect($questionID){
     $quresult = mysqli_query($link, $ququery);
     $rowCount = $quresult->num_rows;
     if($rowCount < 1){
-        return na;
+        return 'na';
     }
     $passes = 0;
     while($row = mysqli_fetch_array($quresult)){
@@ -1013,6 +1026,44 @@ function isAdmin(){
     }
 }
 
+function isDutyNow($employee){
+
+    // this allows the slots array, from the top of this page, to be used in this function
+    global $slots;
+
+    // get time as a decimal
+    $time = currentHour() + (currentMinute()/60);
+
+// loop through the slots
+foreach ($slots as $slotName => $slotTime){
+
+    $slotStart = substr ( $slotTime , 0 ,2) + (substr ( $slotTime , 3 ,2))/60;
+    $slotEnd = substr ( $slotTime , 8 ,2) + (substr ( $slotTime , 11 ,2))/60;    
+
+    if($time > $slotStart && $time < $slotEnd){
+        // we're on the current slot, check if the manager is the user
+        
+        // connect to the database and check who is duty now
+        include 'connection.php';
+
+        $query = "SELECT manager FROM `bridge` WHERE `slot` = '".$slotName."'";
+        $result = mysqli_query($link, $query);
+        $row = mysqli_fetch_array($result);
+    
+        // return true or false if the current user is the current duty manager
+        debug_to_console('Slot:'.$slotName);
+        if($row['manager'] == $employee){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    
+}
+
+}
+
 function isThisWeek($date){
     // specify the date range for 'this week'
     if(date("l") == 'Sunday'){
@@ -1076,4 +1127,102 @@ function monthText($month){
     $dateObj   = DateTime::createFromFormat('!m', $month);
     return $dateObj->format('F');
 }
+
+function checkPoolLadder($employee){
+    include 'connection.php';
+
+    // if the employee isn't in the poolladder table, create them
+    $poolquery = "SELECT * FROM `poolladder` WHERE `employee`='".$employee."'";
+    $poolresult = mysqli_query($link, $poolquery);
+
+    if (mysqli_num_rows($poolresult)==0) { 
+        // they aren't ranked yet, create new record
+        $win = "INSERT INTO `poolladder` (employee) VALUES ('".$employee."')";
+        
+        debug_to_console("Creating new record");
+
+        if ($link->query($win) === TRUE) {
+            debug_to_console("New employee added to pool ladder successfully");
+        } else {
+            echo "Error: " . $sql . "<br>" . $link->error;
+        } 
+    }
+}
+
+function getPoolRating($employee){
+    include 'connection.php';
+
+    $winquery = "SELECT rating FROM `poolladder` WHERE `employee`='".$employee."'";
+    $winresult = mysqli_query($link, $winquery);
+
+    if (!$winresult) {
+        printf("Error: %s\n", mysqli_error($link));
+        exit();
+    }
+    while($winresult = mysqli_fetch_array($winresult)){
+
+        return $winresult['rating'];
+
+    }
+}
+
+function updatePoolRating($employee, $rating){
+    include 'connection.php';
+
+    $sql = "UPDATE `poolladder` SET `rating` = '".$rating."' WHERE `employee`='".$employee."'";
+    if ($link->query($sql) === TRUE) {
+        debug_to_console("Rating updated successfully");        
+    } else {
+        echo "Error: " . $sql . "<br>" . $link->error;
+    }
+}
+
+function poolResult($winner, $loser){
+    
+    $winRating = getPoolRating($winner);
+    $loseRating = getPoolRating($loser);
+    debug_to_console("Winner :".$winRating);
+    debug_to_console("Loser :".$loseRating);
+    $dif = abs($winRating - $loseRating);
+    if($dif > 200){
+        $dif=200;
+    }
+
+    if($winRating == $loseRating){
+        // two are the same rating, add 16 to winner and take 16 from loser
+        $winRating += 15;
+        $loseRating -= 15;
+
+        updatePoolRating($winner, $winRating);
+        updatePoolRating($loser, $loseRating);
+
+        return;
+    }
+
+    if($winRating > $loseRating){
+        // two are the same rating, add 16 to winner and take 16 from loser
+        $winRating += (16 - round($dif/16));
+        $loseRating -= (16 - round($dif/16));
+
+        updatePoolRating($winner, $winRating);
+        updatePoolRating($loser, $loseRating);
+
+        return;
+    
+    }
+
+    if($winRating < $loseRating){
+        // two are the same rating, add 16 to winner and take 16 from loser
+        $winRating += (16 + round($dif/16));
+        $loseRating -= (16 + round($dif/16));
+
+        updatePoolRating($winner, $winRating);
+        updatePoolRating($loser, $loseRating);
+
+        return;
+        
+    }
+
+}
+
 ?>

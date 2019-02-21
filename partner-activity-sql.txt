@@ -1,0 +1,50 @@
+SELECT
+  firstname,
+  surname,
+  CASE
+    WHEN COUNT(score) IS NULL THEN 0
+    ELSE COUNT(score)
+  END AS THISCOUNT
+FROM partners
+LEFT JOIN partner_team_month_score
+  ON partners.employee = partner_team_month_score.employee
+WHERE MONTH = 6
+AND YEAR = 2018
+GROUP BY partner_team_month_score.employee
+ORDER BY COUNT(score) ASC;
+
+
+
+
+SELECT
+  firstname,
+  surname,
+  partners.employee,
+  COUNT(score)
+FROM partners
+LEFT JOIN partner_team_month_score
+  ON partners.employee = partner_team_month_score.employee
+WHERE
+(MONTH = 6
+AND YEAR = 2018) OR
+(Month IS NULL)
+GROUP BY partners.employee
+ORDER BY COUNT(score) ASC;
+
+
+SELECT
+  e.employee,
+  e.firstname,
+  e.surname,
+  (SELECT
+    COUNT(*)
+  FROM partner_team_month_score s
+  WHERE s.employee = e.employee
+  AND s.year = 2018
+  AND s.month = 6)
+  AS ScoreCount
+FROM partners e
+WHERE e.active = 1
+AND e.team = 'Blue'
+AND e.level = 10
+ORDER BY ScoreCount ASC;

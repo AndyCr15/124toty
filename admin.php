@@ -43,11 +43,13 @@
                     if(isManager()) {
                     
                     ?>
+                    <!--
                     <div class="topBottom col-sm-6 col-lg-4">
 
                         <a href="sendmail.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Email Team</a>
 
-                    </div>                          
+                    </div>
+                    -->                      
 
                     <div class="topBottom col-sm-6 col-lg-4">
 

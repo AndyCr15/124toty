@@ -12,6 +12,31 @@ $notiLevel = array(); // this will set the class of the alert
 
 include 'connection.php';
 
+// Check if on duty, if so show what should be done this hour
+if(isDutyNow($_SESSION['userData']['employee'])){
+
+    array_push($notifications , '<a href="floormanager.php">You\'re Duty!</a>');
+    array_push($notiLevel, 'success');
+
+    $dutyquery =    "SELECT
+                        task
+                    FROM floormanagertasks
+                    WHERE (starthour <= ".currentHour()."
+                    AND endhour > ".currentHour().")";
+    $dutyresult = mysqli_query($link, $dutyquery);
+
+    if (!$dutyresult) {
+        printf("Error: %s\n", mysqli_error($link));
+        exit();
+    }
+
+    while($dutyrow = mysqli_fetch_array($dutyresult)){
+        array_push($notifications , '<a href="floormanager.php">Floor Manager : '.$dutyrow['task'].'</a>');
+        array_push($notiLevel, 'success');
+    }
+}
+
+
 // look for sick calls not recorded on PartnerLink
 $rtwquery = "SELECT id FROM `sickness` WHERE (`manager`='".$_SESSION['userData']['employee']."' AND `actioned`='0') LIMIT 1";
 $rtwresult = mysqli_query($link, $rtwquery);
@@ -97,7 +122,6 @@ if($_SESSION['userData']['level'] < 10){
 
 $bridgeQuery = "SELECT * FROM `bridge` WHERE `manager`='".$_SESSION['userData']['employee']."'";
 $bridgeResult = mysqli_query($link, $bridgeQuery);
-$theseslots = array('eight'=>'Open - 09:15','nine'=>'09:15 - 10:15','ten'=>'10:15 - 11:15','eleven'=>'11:15 - 12:15','twelve'=>'12:15 - 13:15','thirteen'=>'13:15 - 14:15','fourteen'=>'14:15 - 15:15','fifteen'=>'15:15 - 16:15','sixteen'=>'16:15 - 17:15','seventeen'=>'17:15 - 18:15','eighteen'=>'18:15 - 19:15','nineteen'=>'19:15 - End');
 
 if (!$bridgeResult) {
     printf("Error: %s\n", mysqli_error($link));
@@ -106,7 +130,7 @@ if (!$bridgeResult) {
 
 $bridgeCover = '';
 while($bridgeRow = mysqli_fetch_array($bridgeResult)){
-    $time = $theseslots[$bridgeRow['slot']].', ';
+    $time = $slots[$bridgeRow['slot']].', ';
 
     if(substr($bridgeCover, -7, 5) == substr($time,0,5)){
         // this means the end of the last slot is the same as the start of the next slot
@@ -116,7 +140,7 @@ while($bridgeRow = mysqli_fetch_array($bridgeResult)){
     
     if(((substr($time, -7, 2) + 0.25) < (currentHour() + (currentMinute()/60))) && (substr($time, -5, 3) != 'End')){
         // this means the current time is past the end of the slot we're checking, so don't add it.
-        // also a check the final time is not 'End' otherwise the last slow will never show up
+        // also a check the final time is not 'End' otherwise the last slot will never show up
         $time = '';
     }
     $bridgeCover .= $time;

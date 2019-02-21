@@ -47,7 +47,7 @@
                         <!-- populate the drop down list with Partners allowed to do rotation spot checks -->
                         <?php
                     
-                    $query = "SELECT * FROM `partners` WHERE `active`='1' ORDER BY `firstname`";
+                        $query = "SELECT * FROM `partners` WHERE `active`='1' ORDER BY `firstname`";
                         $result = mysqli_query($link, $query);
                         if (!$result) {
                             printf("Error: %s\n", mysqli_error($link));
@@ -59,15 +59,14 @@
 
                         }
                     
-                    ?>
+                        ?>
                         </select>
-
                     </div>
 
                     <div class="form-group">
                         <label for="area"><h4>Area of Check</h4></label>
                         <select class="form-control" id="area" name="area">
-                            <option value="nill">Select...</option>
+                            <!--<option value="nill">Select...</option>-->
                             <option value="checkouts">Checkouts</option>
                             <option value="counters">Counters</option>
                             <option value="floor">Shop Floor</option>
@@ -76,19 +75,44 @@
 
                     <div id="criteria"></div>
 
-                    <div id="resultText" class="form-group">
-                        
+                    <div class="form-group">
+                    <label for="checks"><h4>Check The Following</h4></label><br>
+                        <input type="checkbox" id="uniform" name="uniform" value="uniform" class="vertAlign"> Smartly dressed in correct uniform<br>
+                        <input type="checkbox" id="ready" name="ready" value="ready" class="vertAlign"> Have their heads up and ready to help<br>
+                        <input type="checkbox" id="greeting" name="greeting" value="greeting" class="vertAlign"> Give a warm greeting<br>
+                        <input type="checkbox" id="smile" name="smile" value="smile" class="vertAlign"> Smile and make eye contact<br>
+                        <input type="checkbox" id="listening" name="listening" value="listening" class="vertAlign"> Showing they actively listening<br>
+                        <input type="checkbox" id="personal" name="personal" value="personal" class="vertAlign"> Making interactions personal<br>
+                        <input type="checkbox" id="information" name="information" value="information" class="vertAlign"> Providing the right level of information<br>
+                        <input type="checkbox" id="knowledge" name="knowledge" value="knowledge" class="vertAlign"> Sharing great product knowledge<br>
+                        <input type="checkbox" id="display" name="display" value="display" class="vertAlign"> Having a vibrant and enticing display<br>
+                        <input type="checkbox" id="thanks" name="thanks" value="thanks" class="vertAlign"> Giving a genuine thank you<br>
+                        <input type="checkbox" id="goodbye" name="goodbye" value="goodbye" class="vertAlign"> Warmly saying goodbye<br>
                     </div>
-                    <div id="discussionText" class="form-group"></div>
+
+
+                    <div id="resultText" class="form-group">
+                        <label for="result"><h4>Overall Result</h4></label>
+                        <select class="form-control" id="result" name="result">
+                                <option value="pass">Pass</option>
+                                <option value="fail">Fail</option>
+                        </select>    
+                    </div>
+
+                    <div id="discussionText" class="form-group">
+                        <label for="discussion"><h4>Summary of discussion</h4></label>
+                        <textarea class="form-control" id="discussion" name="discussion" rows="3"></textarea>
+                    </div>
+
                     <div class="form-group">
                         <label for="manager"><h4>Partner Completing Check</h4></label>
                         <select class="form-control" id="manager" name="manager">
                         
                             
-                            <!-- populate the drop down list with Partners allowed to do rotation spot checks -->
+                        <!-- populate the drop down list with Partners allowed to do rotation spot checks -->
                         <?php
                     
-                        $query = "SELECT * FROM `partners` WHERE `canuniformcheck` = '1' ORDER BY `firstname`";
+                        $query = "SELECT * FROM `partners` WHERE `canrotationcheck` = '1' ORDER BY `firstname`";
                         $result = mysqli_query($link, $query);
                         if (!$result) {
                             printf("Error: %s\n", mysqli_error($link));
@@ -111,7 +135,6 @@
                         ?>
                         </select>
 
-
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add Observation</button>
@@ -125,56 +148,61 @@
 
         ?>
 
-<script>
-            /* event listener */
-            document.getElementsByName("area")[0].addEventListener('change', doThing);
+<!--<script>
+// this script is to change to area labled 'criteria' to explanatory text based on the area chosen
+    /* event listener */
+    document.getElementsByName("area")[0].addEventListener('change', doThing);
+
+    /* function */
+    function doThing(){               
+        var markup = 'Select an area for the check';
+        var markup2 = '';
+        var markup3 = '';
+        if(this.value == 'checkouts'){
+            markup = `
+            <h6>Partner is neat and well groomed<br>Area visibly clear of carrier bags<br>Genuine greeting, smile and eye contact<br>Acknowledge waiting customers<br>Offers bag for like (mainline only)<br>Offers to pack<br>Asks for myWaitrose Card<br>Clearly and politely states the cost<br>Positive closing comment with smile<br>Gives green token<br>Waits for customer to leave before serving next</h6>
+            `;
+        }
+
+        if(this.value == 'counters'){
+            markup = `
+            <h6>Partner is neat and well groomed<br>Genuine greeting, smile and eye contact<br>Acknowledge waiting customers<br>Offers product knowledge and relevant service information<br>Offers further help<br>Positive closing comment with smile</h6>
+            `;
+        }
+
+        if(this.value == 'floor'){
+            markup = `
+            <h6>Partner is neat and well groomed<br>Genuine greeting, smile and eye contact<br>Escot to product (Optional)<br>Hands product to customer (Optional)<br>Asks customer to continue shopping while product is found/checked (As appropriate)<br>Offers further help</h6>
+            `;
+        }
+
+        // place the explanation into the criteria area
+        document.getElementById("criteria").innerHTML = markup;
+
+    }
+    </script>-->
+        
+<!--<script>
+// only show the discussion box if they have failed
+        document.getElementsByName("result")[0].addEventListener('change', addDiscussion);
 
             /* function */
-            function doThing(){                
-                var markup = 'Select an area for the check';
-                var markup2 = '';
-                var markup3 = '';
-                if(this.value == 'checkouts'){
+            function addDiscussion(){
+                var markup = '';
+                if(this.value == 'pass'){
+                    markup = ``;
+                } else {
                     markup = `
-                    <h6>Partner is neat and well groomed<br>Area visibly clear of carrier bags<br>Genuine greeting, smile and eye contact<br>Acknowledge waiting customers<br>Offers bag for like (mainline only)<br>Offers to pack<br>Asks for myWaitrose Card<br>Clearly and politely states the cost<br>Positive closing comment with smile<br>Gives green token<br>Waits for customer to leave before serving next</h6>
-                    `;
-                }
-
-                if(this.value == 'counters'){
-                    markup = `
-                    <h6>Partner is neat and well groomed<br>Genuine greeting, smile and eye contact<br>Acknowledge waiting customers<br>Offers product knowledge and relevant service information<br>Offers further help<br>Positive closing comment with smile</h6>
-                    `;
-                }
-
-                if(this.value == 'floor'){
-                    markup = `
-                    <h6>Partner is neat and well groomed<br>Genuine greeting, smile and eye contact<br>Escot to product (Optional)<br>Hands product to customer (Optional)<br>Asks customer to continue shopping while product is found/checked (As appropriate)<br>Offers further help</h6>
-                    `;
-                }
-
-                document.getElementById("criteria").innerHTML = markup;
-                
-                if(this.value != 'nill'){
-                    markup2 = `
                         <label for="discussion"><h4>Summary of discussion</h4></label>
                         <textarea class="form-control" id="discussion" name="discussion" rows="3"></textarea>
-                        `;
-                        markup3 = `
-                        <label for="result"><h4>Result</h4></label>
-                        <div id="criteria"></div>
-                        <select class="form-control" id="result" name="result">
-                                <option value="pass">Pass</option>
-                                <option value="fail">Fail</option>
-                        </select>
-                        `;
-                        }
+                    `;
+                }
 
-                        document.getElementById("discussionText").innerHTML = markup2;
-                        document.getElementById("resultText").innerHTML = markup3;
+                document.getElementById("discussionText").innerHTML = markup;
+                
             }
-
-            
-        </script>
+    
+</script>-->
 
 <script type="text/javascript">
                     $("form").submit(function(e) {

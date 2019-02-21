@@ -55,34 +55,28 @@
                     echo '<div class="'.strtolower($row['team']).'Background">';
 
                     echo $row['firstname'].' '.$row['surname'].' ('.$row['employee'].')';
+                    
+
+                    if(($_SESSION['userData']['level'] < 10) AND ($row['picture']!='')){
+                        echo '<font size="1"><a href="'.$row['picture'].'" target="_blank"> <img src="images/picture.png" alt="Partner Photo"></a></font>';
+                        }
+                    
                     if($_SESSION['userData']['level'] < 9){
-                    echo '<font size="1"><a href="addpartner.php?employee='.$row['employee'].'">   [EDIT]</a></font>';
+                    echo '<font size="1"><a href="addpartner.php?employee='.$row['employee'].'"><img src="images/edit.png" alt="Edit Partner"></a></font>';
                     }
+
+
                     echo '</div>';    
                     echo '</div>';
-
-                    //admins can see when the user last logged in
-                    if($_SESSION['userData']['admin'] == "1"){
-                        //admin is viewing Partner details
-                        if($row['lastvisit'] != ""){
-                            // only show if they've ever logged in
-                            echo '<div class="col-12">';
-                            echo '<div class="whiteBackground">';
-                            echo '<strong>Last Logged in: </strong>'.$row['lastvisit'];
-                            echo '</div>';
-                            echo '</div>';
-                        }
-
-                        // add edit details button
                         
-                    }
-                    
+
                     //if TL or above and this Partner has a phone number, show the details
                     if(canCheck($_SESSION['userData']['employee'])){
                         
                         $phone = $row['phone'];
                         $reg =  $row['carreg'];
                         
+                        /* removed due to GDPR concerns
                         // if they have a phone number, show it. Otherwise link to page to add details.
                         if($row['phone'] == ""){
                             
@@ -120,19 +114,20 @@
                             echo '</div>';
                         
                         }
-                        
+                        */
+
                         if($row['carreg'] == ""){
                             
-                            echo '<div class="col-sm-4">';
-                            echo '<div class="lightGreenBox click">';
+                            echo '<div class="col-sm-6">';
+                            echo '<div class="whiteBackground click">';
                             echo '<a href="entercarreg.php?employeenumber='.$employee.'">Enter Car Registration</a>';
                             echo '</div>';
                             echo '</div>';
                             
                         } else {
                             
-                            echo '<div class="col-sm-4">';
-                            echo '<div class="lightGreenBox click">';
+                            echo '<div class="col-sm-6">';
+                            echo '<div class="'.strtolower($row['team']).'Background click">';
                             echo 'Car Reg : '.$row['carreg'];
                             echo '</div>';
                             echo '</div>';
@@ -142,7 +137,7 @@
                         // show white background if not signed up, team colour if they are
                         if($row['hasphoto'] == "0"){
 
-                            echo '<div class="col-sm-4">';
+                            echo '<div class="col-sm-6">';
                             echo '<div class="whiteBackground click">';
                             echo '<a href="togglesignedup.php?employee='.$row['employee'].'&completed=1&db=hasphoto&source='.$row['employee'].'">Needs Wall Photo</a>';
                             echo '</div>';
@@ -150,7 +145,7 @@
                             
                         } else {
                             
-                            echo '<div class="col-sm-4">';
+                            echo '<div class="col-sm-6">';
                             echo '<div class="'.strtolower($row['team']).'Background click">';
                             echo '<a href="togglesignedup.php?employee='.$row['employee'].'&completed=0&db=hasphoto&source='.$row['employee'].'">Has Wall Photo</a>';
                             echo '</div>';
@@ -160,7 +155,7 @@
 
                         if($row['hasfacebook'] == "0"){
 
-                            echo '<div class="col-sm-4">';
+                            echo '<div class="col-sm-6">';
                             echo '<div class="whiteBackground click">';
                             echo '<a href="togglesignedup.php?employee='.$row['employee'].'&completed=1&db=hasfacebook&source='.$row['employee'].'">Not on Facebook</a>';
                             echo '</div>';
@@ -168,7 +163,7 @@
                             
                         } else {
                             
-                            echo '<div class="col-sm-4">';
+                            echo '<div class="col-sm-6">';
                             echo '<div class="'.strtolower($row['team']).'Background click">';
                             echo '<a href="togglesignedup.php?employee='.$row['employee'].'&completed=0&db=hasfacebook&source='.$row['employee'].'">On Facebook</a>';
                             echo '</div>';
@@ -178,7 +173,7 @@
 
                         if($row['hasgoogle'] == "0"){
 
-                            echo '<div class="col-sm-4">';
+                            echo '<div class="col-sm-6">';
                             echo '<div class="whiteBackground click">';
                             echo '<a href="togglesignedup.php?employee='.$row['employee'].'&completed=1&db=hasgoogle&source='.$row['employee'].'">Not on Google</a>';
                             echo '</div>';
@@ -186,7 +181,7 @@
                             
                         } else {
                             
-                            echo '<div class="col-sm-4">';
+                            echo '<div class="col-sm-6">';
                             echo '<div class="'.strtolower($row['team']).'Background click">';
                             echo '<a href="togglesignedup.php?employee='.$row['employee'].'&completed=0&db=hasgoogle&source='.$row['employee'].'"> On Google</a>';
                             echo '</div>';
@@ -234,6 +229,19 @@
                     echo 'Percentage: '.bagCheckPassPercentage($employee).'%';
                     echo '</div>';
                     echo '</div>';
+
+//admins can see when the user last logged in
+if($_SESSION['userData']['admin'] == "1"){
+    //admin is viewing Partner details
+    if($row['lastvisit'] != ""){
+        // only show if they've ever logged in
+        echo '<div class="col-4">';
+        echo '<div class="whiteBackground">';
+        echo '<strong>Last Logged in: </strong>'.$row['lastvisit'];
+        echo '</div>';
+        echo '</div>';
+    }
+}
 
                     ?>
 
@@ -499,6 +507,11 @@
                     echo '<div class="col-sm-4">';
                     echo '<div class="whiteBackground">';
                     echo '<strong>Questions Asked : </strong>'.countChecksDone($employee,'questionchecks');
+                    echo '</div>';
+                    echo '</div>';
+                    echo '<div class="col-sm-4">';
+                    echo '<div class="whiteBackground">';
+                    echo '<strong>Food Safety Checks : </strong>'.countChecksDone($employee,'foodsafetychecks');
                     echo '</div>';
                     echo '</div>';
                 }

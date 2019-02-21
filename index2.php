@@ -28,7 +28,7 @@
 
         <?php
 
-            include 'navbar_new.php';
+            include 'navback.php';
 
         ?>
 
@@ -55,16 +55,6 @@
                     echo '</div>';
                 }
                 ?>
-            </div>
-
-            <div class="row indexborder">
-
-                <h4 class="col-12">Partner Search</h4>
-
-                <div id="error">
-                    <? echo $error.$successMessage; ?>
-                </div>
-
             </div>
 
             <!-- display the current TOTY league table -->
@@ -117,8 +107,6 @@
                 
                 <?php
 
-                if($_SESSION['userData']['level'] < 10) {
-
                 ?>
 
                 <div class="topBottom col-12">
@@ -126,16 +114,54 @@
                     <a href="admin.php" class="btn btn-light btn-block btn-lg" role="button">Admin</a>
 
                 </div>
-                </div>
-                <?php
+            </div>
 
-                }
+            <div class="form-group row">
+                <div class="col-sm-2">
+                    My Phone:
+                </div>
+
+                <div class="col-sm-10">
+                <select class="form-control" id="phone" name="phone">
+                    <?php
+                    $phoneQuery = "SELECT * FROM `phones`ORDER BY `id`";
+                    $phoneResult = mysqli_query($link, $phoneQuery);
+                    if (!$phoneResult) {
+                        printf("Error: %s\n", mysqli_error($link));
+                        exit();
+                    }
+
+                    while($phoneRow = mysqli_fetch_array($phoneResult)){
+                        $selected = '';
+                        if($_SESSION['userData']['employee'] == $phoneRow['manager']){
+                            $selected =  'selected="selected"';
+                        }
+                        echo '<option value="'.$phoneRow['id'].'" '.$selected.'>'.$phoneRow['id'].'</option>'; 
+                    }
+
+                    ?>
+                    </select>
+
+                </div>
+            </div>
+            <?php
             
         include 'footer.php';
 
     ?>
 
-    
+    <script>
+            /* event listener */
+            var phone = document.getElementsByName("phone")[0];
+            phone.addEventListener('change', doThing);
+
+            /* function */
+            function doThing(){
+
+                location.href = 'processsinglephone.php?id=<?php // need the value from the drop down ?>&manager=<?php echo $_SESSION['userData']['employee'] ?>';
+                
+            }
+        </script>
 
             <script type="text/javascript">
                 $("form").submit(function(e) {

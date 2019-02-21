@@ -107,8 +107,6 @@
                 
                 <?php
 
-                if($_SESSION['userData']['level'] < 10) {
-
                 ?>
 
                 <div class="topBottom col-12">
@@ -118,8 +116,6 @@
                 </div>
                 </div>
                 <?php
-
-                }
             
         include 'footer.php';
 

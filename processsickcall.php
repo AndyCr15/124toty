@@ -1,8 +1,10 @@
+<?php include 'session.php'; ?>
+
 <!DOCTYPE html>
 
-<?php
+<html lang="en">
 
-include 'session.php';
+<?php
 
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -64,7 +66,7 @@ if(isset($_GET['remove'])){
 
 if(isset($_GET['actioned']) and isset($_GET['id'])){
     
-    $sql = "UPDATE `sickness` SET actioned='".$_GET['actioned']."' WHERE id='".$_GET['id']."'";
+    $sql = "UPDATE `sickness` SET actioned='".$_GET['actioned']."', time=time WHERE id='".$_GET['id']."'";
     
     if ($link->query($sql) === TRUE) {
         echo "Sickness actioned successfully";

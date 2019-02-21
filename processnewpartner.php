@@ -13,6 +13,7 @@ if (!empty($_POST)) {
     $employee = mysqli_real_escape_string($link, $_POST['employee']);
     $firstname = mysqli_real_escape_string($link, $_POST['firstname']);
     $surname = mysqli_real_escape_string($link, $_POST['surname']);
+    $picture = mysqli_real_escape_string($link, $_POST['picture']);
     $phone = mysqli_real_escape_string($link, $_POST['phone']);
     $email = mysqli_real_escape_string($link, $_POST['email']);
     $carreg = mysqli_real_escape_string($link, $_POST['carreg']);
@@ -83,8 +84,8 @@ if (!empty($_POST)) {
 
     }
 
-    $sql = "REPLACE INTO `partners` (employee, firstname, surname, phone, email, carreg, team, level, canrotationcheck, canuniformcheck, canbagcheck, active)
-    VALUES ('".$employee."','".$firstname."','".$surname."','".$phone."','".$email."','".$carreg."','".$team."','".$level."','".$canrotationcheck."','".$canuniformcheck."','".$canbagcheck."','".$active."')";
+    $sql = "REPLACE INTO `partners` (employee, firstname, surname, picture, phone, email, carreg, team, level, canrotationcheck, canuniformcheck, canbagcheck, active)
+    VALUES ('".$employee."','".$firstname."','".$surname."','".$picture."','".$phone."','".$email."','".$carreg."','".$team."','".$level."','".$canrotationcheck."','".$canuniformcheck."','".$canbagcheck."','".$active."')";
 
     if ($link->query($sql) === TRUE) {
         debug_to_console("Partner updated or created successfully");

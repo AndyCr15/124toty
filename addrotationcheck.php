@@ -19,7 +19,8 @@
     $pointcheckLimit = 10;
     $paperworkLimit = 5;
     $reducingLimit = 10;
-    $rotationLimit = 5;
+    $rotationLimit = 10;
+    $noteLimit = 20;
 
     ?>
 
@@ -46,6 +47,7 @@
                 Paperwork - <?php echo $paperworkLimit ?><br>
                 Reducing - <?php echo $reducingLimit ?><br>
                 Rotation - <?php echo $rotationLimit ?><br>
+                Fake Note - <?php echo $noteLimit ?><br>
                 <br>
                 Points are awarded on your total checks.</h6>
 
@@ -89,6 +91,9 @@
                                     break;
                                 case 'Paperwork':
                                     $thisLimit = $paperworkLimit;
+                                    break;
+                                case 'Fake Note':
+                                    $thisLimit = $noteLimit;
                                     break;
                             }
                             if($count >= $thisLimit){

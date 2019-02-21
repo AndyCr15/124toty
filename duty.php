@@ -57,7 +57,19 @@
 
             <div class="topBottom col-sm-6 col-lg-4">
 
+                <a href="phones.php" class="btn btn-light btn-block btn-lg" role="button">Phones</a>
+
+            </div>
+
+            <div class="topBottom col-sm-6 col-lg-4">
+
                 <a href="viewhandovers.php" class="btn btn-light btn-block btn-lg" role="button">Handovers</a>
+
+            </div>
+
+            <div class="topBottom col-sm-6 col-lg-4">
+
+                <a href="viewstockwatch.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Stock Watch</a>
 
             </div>
 
@@ -74,15 +86,21 @@
 
             </div>
 
-            <?php
-            }
-            ?>
+            <div class="topBottom col-sm-6 col-lg-4">
+
+                <a href="viewsickcalls.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Return To Works</a>
+
+            </div>
 
             <div class="topBottom col-sm-6 col-lg-4">
 
-                <a href="viewstockwatch.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Stock Watch</a>
+                <a href="viewcarpark.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Car Park Exceptions</a>
 
             </div>
+
+            <?php
+            }
+            ?>
 
             <div class="topBottom col-sm-6 col-lg-4">
 

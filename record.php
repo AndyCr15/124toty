@@ -125,6 +125,13 @@
                 }
 
                     ?>
+
+                    <div class="topBottom col-sm-6 col-lg-4">
+
+                        <a href="poolladder.php" class="btn btn-light btn-block btn-lg" role="button" aria-pressed="true">Pool Ladder</a>
+
+                        </div>
+
                 </div>
 
             <?php

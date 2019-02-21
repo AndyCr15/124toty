@@ -117,7 +117,12 @@
                                     
                                     $percent = max($firstpercent, $surpercent, ($carpercent+25));
                                     
-                                    if($percent>64){
+                                    $variance = 64;
+                                    if(preg_match('/[0-9]/', $search)){
+                                        $varince=95;
+                                    }
+
+                                    if($percent>$variance){
                                  
                                         showUser($row);
  
